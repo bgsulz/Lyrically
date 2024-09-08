@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "95952241902",
+    "project_id": "lyrics-guessing-game",
+    "storage_bucket": "lyrics-guessing-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95952241902:android:04d7cc712779a1afc41fff",
+        "android_client_info": {
+          "package_name": "com.bgs.lyrically"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJ86UTFOtwPUHGBIRrHr_n2BvRJHHYOrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

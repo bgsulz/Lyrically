@@ -1,0 +1,25 @@
+{
+    "hosting": {
+        "source": ".",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "frameworksBackend": {
+            "region": "us-central1"
+        }
+    },
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "lyrics-guessing-game",
+                    "configurations": {
+                        "web": "1:95952241902:web:286d4533f81affeec41fff"
+                    }
+                }
+            }
+        }
+    }
+}
