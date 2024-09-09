@@ -56,7 +56,7 @@ class Style {
       fontFamily: 'Archivo',
       fontVariations: [
         FontVariation("wght", 300),
-        FontVariation("wdth", 87.5),
+        FontVariation("wdth", 100),
       ],
     );
   }
@@ -70,7 +70,7 @@ class Style {
       fontFamily: 'Archivo',
       fontVariations: [
         FontVariation("wght", 300),
-        FontVariation("wdth", 87.5),
+        FontVariation("wdth", 100),
       ],
     );
   }

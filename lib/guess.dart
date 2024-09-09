@@ -17,6 +17,9 @@ class GuessInfo {
     while (emojis.length < 5) {
       emojis.add('⬜');
     }
-    return "${'${guesses.length}/5'} [${emojis.join('')}]";
+    var quantity = guesses.length == 5 && guesses[4] != Guess.correct
+        ? "X"
+        : guesses.length.toString();
+    return "${'$quantity/5'} [${emojis.join('')}]";
   }
 }

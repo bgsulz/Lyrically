@@ -1,13 +1,16 @@
+import 'dart:html';
 import 'dart:collection';
+import 'dart:convert';
+
+import 'guess.dart';
+import 'lyrics.dart';
+import 'game_widgets/buttons.dart';
+import 'game_widgets/info.dart';
+import 'game_widgets/results.dart';
+import 'game_widgets/lyric.dart';
+import 'game_widgets/search.dart';
 
 import 'package:flutter/material.dart';
-import 'package:lyrically/game_widgets/buttons.dart';
-import 'package:lyrically/game_widgets/info.dart';
-import 'package:lyrically/game_widgets/results.dart';
-import 'package:lyrically/guess.dart';
-import 'package:lyrically/game_widgets/lyric.dart';
-import 'package:lyrically/lyrics.dart';
-import 'package:lyrically/game_widgets/search.dart';
 import 'package:mesh_gradient/mesh_gradient.dart';
 import 'package:provider/provider.dart';
 
@@ -40,47 +43,83 @@ class GameScreen extends StatelessWidget {
 }
 
 class GameState extends ChangeNotifier {
-  final controller = TextEditingController();
+  final guessController = TextEditingController();
 
   int songId = 2;
-  int revealedCount = 1;
   SolutionState solutionState = SolutionState.unsolved;
   bool get isSolved => solutionState == SolutionState.solved;
 
-  final List<Guess> _guesses = <Guess>[];
+  List<Guess> _guesses = <Guess>[];
+  int get revealedCount => _guesses.length + 1;
 
   List<Guess> get guesses => UnmodifiableListView<Guess>(_guesses);
 
-  void incrementCount() {
-    revealedCount++;
+  GameState() {
+    _load();
+  }
+
+  void submitGuess() {
+    var guess = Lyrics.calculateGuess(guessController.text);
+    guessController.clear();
+
+    _guesses.add(guess);
+    if (guess != Guess.correct) {
+      skip();
+    } else {
+      _solve();
+    }
+  }
+
+  void skip() {
+    _guesses.add(Guess.skip);
     if (revealedCount > 5) {
       _fail();
     } else {
       notifyListeners();
+      _save();
     }
-  }
-
-  void submitGuess() {
-    var guess = Lyrics.calculateGuess(controller.text);
-
-    _guesses.add(guess);
-    if (guess != Guess.correct) {
-      incrementCount();
-    } else {
-      _solve();
-    }
-
-    controller.clear();
   }
 
   void _solve() {
     solutionState = SolutionState.solved;
     notifyListeners();
+    _save();
   }
 
   void _fail() {
     solutionState = SolutionState.failed;
     notifyListeners();
+    _save();
+  }
+
+  final _localStorage = window.localStorage;
+
+  void _save() {
+    print(
+        'Saving state: ${jsonEncode(_guesses.map((g) => g.name).toList())}, ${solutionState.name}');
+    _localStorage['guesses'] = jsonEncode(_guesses.map((g) => g.name).toList());
+    _localStorage['solutionState'] = solutionState.name;
+    print('Saved state');
+  }
+
+  void _load() {
+    final guessesJson = _localStorage['guesses'];
+    final solutionStateString = _localStorage['solutionState'];
+    print('Loading state: $guessesJson, $solutionStateString');
+
+    if (guessesJson != null) {
+      List<String> list = jsonDecode(guessesJson)
+          .map<String>((guess) => guess.toString())
+          .toList();
+      _guesses = list.map((item) => Guess.values.byName(item)).toList();
+    }
+
+    if (solutionStateString != null) {
+      solutionState = SolutionState.values.byName(solutionStateString);
+    }
+
+    notifyListeners();
+    print('Loaded state');
   }
 }
 
@@ -123,49 +162,51 @@ class Game extends StatelessWidget {
   }
 
   Widget _buildPage(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Center(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 480),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildAppBar(context),
-                  const SizedBox(height: 16),
-                  Text('Lyrically',
-                      style: Theme.of(context).textTheme.titleLarge),
-                  const SizedBox(height: 8),
-                  Text('What song are these lyrics from?'.toUpperCase(),
-                      style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 16),
-                  Consumer<GameState>(
-                    builder: (context, gameState, child) {
-                      return SongInfoCard(songId: gameState.songId);
-                    },
-                  ),
-                  const SizedBox(height: 8),
-                  LyricsList(context: context),
-                  const SizedBox(height: 16),
-                  Consumer<GameState>(
-                    builder: (context, gameState, child) {
-                      return gameState.solutionState == SolutionState.unsolved
-                          ? Column(
-                              children: [
-                                SongSearchBar(context: context),
-                                const SizedBox(height: 16),
-                                GuessButtons(context: context),
-                                const SizedBox(height: 16),
-                              ],
-                            )
-                          : ResultDisplay(
-                              context: context, gameState: gameState);
-                    },
-                  ),
-                ],
+    return SelectionArea(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildAppBar(context),
+                    const SizedBox(height: 16),
+                    Text('Lyrically',
+                        style: Theme.of(context).textTheme.titleLarge),
+                    const SizedBox(height: 8),
+                    Text('What song are these lyrics from?'.toUpperCase(),
+                        style: Theme.of(context).textTheme.titleSmall),
+                    const SizedBox(height: 16),
+                    Consumer<GameState>(
+                      builder: (context, gameState, child) {
+                        return const SongInfoCard();
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    LyricsList(context: context),
+                    const SizedBox(height: 16),
+                    Consumer<GameState>(
+                      builder: (context, gameState, child) {
+                        return gameState.solutionState == SolutionState.unsolved
+                            ? Column(
+                                children: [
+                                  SongSearchBar(context: context),
+                                  const SizedBox(height: 16),
+                                  GuessButtons(context: context),
+                                  const SizedBox(height: 16),
+                                ],
+                              )
+                            : ResultDisplay(
+                                context: context, gameState: gameState);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -178,8 +219,14 @@ class Game extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
-          title: Text("Stats"),
+        return Dialog(
+          child: SelectionArea(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child:
+                  Text("Stats", style: Theme.of(context).textTheme.titleMedium),
+            ),
+          ),
         );
       },
     );
@@ -189,10 +236,23 @@ class Game extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
-          title: Text("How to play"),
-          content: SelectableText(
-            "Guess which song the shown lyrics are from. Fragments appear one by one. You have 5 guesses.",
+        return Dialog(
+          child: SelectionArea(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("How to play",
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Guess which song the shown lyrics are from. Fragments appear one by one. You have 5 guesses.",
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },

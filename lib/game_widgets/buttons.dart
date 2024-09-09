@@ -19,7 +19,7 @@ class GuessButtons extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () => (BuildContext context) {
-            gameState.incrementCount();
+            gameState.skip();
           }(context),
           style: TextButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.secondaryContainer,

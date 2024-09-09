@@ -32,7 +32,7 @@ class SongSearchBar extends StatelessWidget {
       onSubmit: (String selection) {
         gameState.submitGuess();
       },
-      controller: gameState.controller,
+      controller: gameState.guessController,
     );
   }
 

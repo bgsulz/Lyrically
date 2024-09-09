@@ -5,10 +5,7 @@ import 'package:lyrically/lyrics.dart';
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
     super.key,
-    required this.songId,
   });
-
-  final int songId;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +24,7 @@ class SongInfoCard extends StatelessWidget {
             ),
             child: Container(
               padding: const EdgeInsets.all(16),
-              child: SelectableText(
+              child: Text(
                 "Released in: ${Lyrics.todayAnswer.year}",
                 style: Theme.of(context)
                     .textTheme

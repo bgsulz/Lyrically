@@ -52,7 +52,7 @@ class LyricCard extends StatelessWidget {
           color: _getColor(context, isShown, index),
           child: Container(
             padding: const EdgeInsets.all(16),
-            child: SelectableText(
+            child: Text(
               isShown ? lyric : "...",
               maxLines: null,
               // overflow: TextOverflow.visible,

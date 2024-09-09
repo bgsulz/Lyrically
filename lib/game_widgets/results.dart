@@ -19,10 +19,10 @@ class ResultDisplay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SelectableText(
+        Text(
             "${gameState.isSolved ? "You got it!" : ""} The answer was: ${Lyrics.todayAnswer}"),
         const SizedBox(height: 16),
-        SelectableText(
+        Text(
           "Guesses: ${GuessInfo.summarize(gameState.guesses)}",
         ),
         const SizedBox(height: 16),
@@ -31,13 +31,11 @@ class ResultDisplay extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () async {
-                await Clipboard.setData(ClipboardData(
-                    text:
-                        "Lyrically: ${GuessInfo.summarize(gameState.guesses)}"));
+                await Clipboard.setData(ClipboardData(text: _getText()));
                 if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Copied to clipboard!")),
-                );
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Copied to clipboard!"),
+                ));
               },
               child: const Text("Copy Results"),
             ),
@@ -46,4 +44,10 @@ class ResultDisplay extends StatelessWidget {
       ],
     );
   }
+
+  _getText() {
+    return "Lyrically: ${GuessInfo.summarize(gameState.guesses)}";
+  }
 }
+
+class Toast {}
