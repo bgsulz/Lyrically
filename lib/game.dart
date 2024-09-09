@@ -40,12 +40,13 @@ class GameScreen extends StatelessWidget {
 }
 
 class GameState extends ChangeNotifier {
+  final controller = TextEditingController();
+
   int songId = 2;
   int revealedCount = 1;
   SolutionState solutionState = SolutionState.unsolved;
   bool get isSolved => solutionState == SolutionState.solved;
 
-  String guessText = "";
   final List<Guess> _guesses = <Guess>[];
 
   List<Guess> get guesses => UnmodifiableListView<Guess>(_guesses);
@@ -60,7 +61,7 @@ class GameState extends ChangeNotifier {
   }
 
   void submitGuess() {
-    var guess = Lyrics.calculateGuess(guessText);
+    var guess = Lyrics.calculateGuess(controller.text);
 
     _guesses.add(guess);
     if (guess != Guess.correct) {
@@ -68,6 +69,8 @@ class GameState extends ChangeNotifier {
     } else {
       _solve();
     }
+
+    controller.clear();
   }
 
   void _solve() {
@@ -100,13 +103,12 @@ class Game extends StatelessWidget {
     );
   }
 
-  Widget _buildPage(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
-        actions: [
+  Widget _buildAppBar(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
           IconButton(
             icon: const Icon(Icons.insert_chart),
             onPressed: () => _showStats(context),
@@ -117,44 +119,54 @@ class Game extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
+    );
+  }
+
+  Widget _buildPage(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Center(
+        child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                Text('Lyrically',
-                    style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 8),
-                Text('What song are these lyrics from?'.toUpperCase(),
-                    style: Theme.of(context).textTheme.titleSmall),
-                const SizedBox(height: 16),
-                Consumer<GameState>(
-                  builder: (context, gameState, child) {
-                    return SongInfoCard(songId: gameState.songId);
-                  },
-                ),
-                const SizedBox(height: 8),
-                LyricsList(context: context),
-                const SizedBox(height: 16),
-                Consumer<GameState>(
-                  builder: (context, gameState, child) {
-                    return gameState.solutionState == SolutionState.unsolved
-                        ? Column(
-                            children: [
-                              SongSearchBar(context: context),
-                              const SizedBox(height: 16),
-                              GuessButtons(context: context),
-                              const SizedBox(height: 16),
-                            ],
-                          )
-                        : ResultDisplay(context: context, gameState: gameState);
-                  },
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildAppBar(context),
+                  const SizedBox(height: 16),
+                  Text('Lyrically',
+                      style: Theme.of(context).textTheme.titleLarge),
+                  const SizedBox(height: 8),
+                  Text('What song are these lyrics from?'.toUpperCase(),
+                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(height: 16),
+                  Consumer<GameState>(
+                    builder: (context, gameState, child) {
+                      return SongInfoCard(songId: gameState.songId);
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  LyricsList(context: context),
+                  const SizedBox(height: 16),
+                  Consumer<GameState>(
+                    builder: (context, gameState, child) {
+                      return gameState.solutionState == SolutionState.unsolved
+                          ? Column(
+                              children: [
+                                SongSearchBar(context: context),
+                                const SizedBox(height: 16),
+                                GuessButtons(context: context),
+                                const SizedBox(height: 16),
+                              ],
+                            )
+                          : ResultDisplay(
+                              context: context, gameState: gameState);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

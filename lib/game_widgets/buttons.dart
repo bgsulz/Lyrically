@@ -12,12 +12,13 @@ class GuessButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameState = Provider.of<GameState>(context, listen: false);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
           onPressed: () => (BuildContext context) {
-            final gameState = Provider.of<GameState>(context, listen: false);
             gameState.incrementCount();
           }(context),
           style: TextButton.styleFrom(
@@ -29,7 +30,6 @@ class GuessButtons extends StatelessWidget {
         const SizedBox(width: 8),
         TextButton(
           onPressed: () => (BuildContext context) {
-            final gameState = Provider.of<GameState>(context, listen: false);
             gameState.submitGuess();
           }(context),
           style: TextButton.styleFrom(
