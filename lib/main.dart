@@ -1,13 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lyrically/firebase_options.dart';
-import 'package:lyrically/game.dart';
+import 'package:lyrically/screen.dart';
 import 'package:lyrically/style.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // This project only runs on web
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const LyricallyApp());
@@ -43,7 +42,7 @@ class LyricallyApp extends StatelessWidget {
           labelSmall: Style.labelSmall,
         ),
       ),
-      home: const GameScreen(),
+      home: const LyricallyScreen(),
     );
   }
 }

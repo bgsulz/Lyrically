@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lyrically/game.dart';
+import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 
 class GuessButtons extends StatelessWidget {
   const GuessButtons({
     super.key,
-    required this.context,
   });
-
-  final BuildContext context;
 
   @override
   Widget build(BuildContext context) {

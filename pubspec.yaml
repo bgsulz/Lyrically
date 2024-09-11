@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  web: ^1.0.0
+
   yaml: ^3.1.2
   provider: ^6.1.2
   flutter_typeahead: ^5.2.0

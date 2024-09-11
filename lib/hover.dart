@@ -8,7 +8,7 @@ class TranslateOnHover extends StatefulWidget {
       {super.key, required this.child, this.isActive = true});
 
   @override
-  _TranslateOnHoverState createState() => _TranslateOnHoverState();
+  State<TranslateOnHover> createState() => _TranslateOnHoverState();
 }
 
 class _TranslateOnHoverState extends State<TranslateOnHover> {

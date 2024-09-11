@@ -1,42 +1,57 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:lyrically/debug.dart';
 import 'package:lyrically/guess.dart';
 
-class Lyrics {
+class Data {
   static Puzzle todayPuzzle = Puzzle.empty();
   static Song todayAnswer = Song.empty();
+  static DateTime get todayDate => DateTime.now();
 
   static final List<String> allSongs = <String>[];
 
   // TODO: Separate into multiple FutureBuilders (lyrics after loadTodayPuzzle, search bar after loadAllSongs)
   static Future<void> initialize() async {
-    print("loading today's puzzle.");
+    debug("loading today's puzzle.");
     if (todayPuzzle.id == -1) await loadTodayPuzzle();
-    print("loading all songs.");
+    debug("loading all songs.");
     if (allSongs.isEmpty) await loadAllSongs();
   }
 
-  static Future<void> loadTodayPuzzle() async {
-    const int id = -1004583924;
+  static String datetimeToYMD(DateTime dt) {
+    return "${dt.year.toString().padLeft(4, '0')}${dt.month.toString().padLeft(2, '0')}${dt.day.toString().padLeft(2, '0')}";
+  }
 
+  static Future<void> loadTodayPuzzle() async {
     final firestore = FirebaseFirestore.instance;
-    print("got past instance.");
-    final docRef = firestore.collection("lyrics").doc(id.toString());
-    print("got past collection.");
+
     try {
+      final dailiesCollection = firestore.collection("dailies");
+      final dailyDocRef = dailiesCollection.doc(datetimeToYMD(todayDate));
+      final dailyDocSnap = await dailyDocRef.get();
+      if (!dailyDocSnap.exists) {
+        throw Exception("Today's daily does not exist.");
+      }
+
+      final dailyData = dailyDocSnap.data() as Map<String, dynamic>;
+      final id = dailyData['id'] as int;
+
+      debug(id.toString());
+
+      final docRef = await firestore
+          .collection("lyrics")
+          .where("songId", isEqualTo: id)
+          .limit(1)
+          .get()
+          .then((snap) => snap.docs.first.reference);
       final puzzleDocSnap = await docRef.get();
       if (!puzzleDocSnap.exists) {
         throw Exception("Today's puzzle does not exist.");
       }
 
-      print("converting puzzle 1");
-      final data = puzzleDocSnap.data() as Map<String, dynamic>;
-      print("converting puzzle 2");
-      todayPuzzle = Puzzle.fromFirebase(data);
-      print("converting puzzle 3");
+      final puzzleData = puzzleDocSnap.data() as Map<String, dynamic>;
+      todayPuzzle = Puzzle.fromFirebase(puzzleData);
 
-      final songId = data['songId'];
-      print(songId);
+      final songId = puzzleData['songId'];
       final songDocRef = firestore.collection("songs").doc(songId.toString());
       final songDocSnap = await songDocRef.get();
       if (!songDocSnap.exists) {
@@ -45,12 +60,13 @@ class Lyrics {
 
       final songData = songDocSnap.data() as Map<String, dynamic>;
       todayAnswer = Song.fromFirebase(songData);
+
+      debug(todayAnswer.toStringVerbose());
     } on FirebaseException {
       rethrow;
     } on Exception catch (e) {
-      print("Failed to load today's puzzle: $e");
+      debug("Failed to load today's puzzle: $e");
     }
-    print("done.");
   }
 
   static Future<void> loadAllSongs() async {
@@ -63,7 +79,7 @@ class Lyrics {
       final artist = data['artist'] as String;
       allSongs.add("$artist - $title");
     }
-    print("done.");
+    debug("done.");
   }
 
   static String getLyricFragment(int index) {
@@ -109,6 +125,11 @@ class Puzzle {
       fragments: List<String>.from(data['fragments']),
     );
   }
+
+  @override
+  String toString() {
+    return 'Puzzle(songId: $songId, id: $id, fragments: ${fragments.join(", ")})';
+  }
 }
 
 class Song {
@@ -141,6 +162,7 @@ class Song {
 
   @override
   String toString() => '$artist - $title';
+  String toStringVerbose() => "${toString()} [$year]";
 
   static Song parse(String songInfo) {
     final parts = songInfo.split(' - ');

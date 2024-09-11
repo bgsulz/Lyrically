@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lyrically/hover.dart';
-import 'package:lyrically/lyrics.dart';
+import 'package:lyrically/data.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
@@ -25,7 +25,7 @@ class SongInfoCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               child: Text(
-                "Released in: ${Lyrics.todayAnswer.year}",
+                "Released in: ${Data.todayAnswer.year}",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lyrically/game.dart';
 import 'package:lyrically/guess.dart';
-import 'package:lyrically/lyrics.dart';
+import 'package:lyrically/data.dart';
+import 'package:lyrically/state.dart';
 
 class ResultDisplay extends StatelessWidget {
   const ResultDisplay({
@@ -19,11 +19,16 @@ class ResultDisplay extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-            "${gameState.isSolved ? "You got it!" : ""} The answer was: ${Lyrics.todayAnswer}"),
+        Text("${gameState.isSolved ? "You got it!" : ""} The answer was:"),
+        Text(Data.todayAnswer.title,
+            style: Theme.of(context).textTheme.headlineSmall),
+        Text(Data.todayAnswer.artist,
+            style: Theme.of(context).textTheme.titleSmall),
+        const SizedBox(height: 16),
+        Text("Written by ${Data.todayAnswer.writers}"),
         const SizedBox(height: 16),
         Text(
-          "Guesses: ${GuessInfo.summarize(gameState.guesses)}",
+          "Guesses: ${GuessInfo.summarize(gameState.guesses, isBlackAndWhite: true)}",
         ),
         const SizedBox(height: 16),
         Row(
@@ -46,7 +51,7 @@ class ResultDisplay extends StatelessWidget {
   }
 
   _getText() {
-    return "Lyrically: ${GuessInfo.summarize(gameState.guesses)}";
+    return "Lyrically ${Data.todayDate.toString().split(' ')[0]}\n${GuessInfo.summarize(gameState.guesses)}";
   }
 }
 

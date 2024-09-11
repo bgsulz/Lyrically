@@ -1,21 +1,21 @@
 enum Guess { skip, incorrect, sameArtist, correct }
 
 class GuessInfo {
-  static String summarize(List<Guess> guesses) {
+  static String summarize(List<Guess> guesses, {bool isBlackAndWhite = false}) {
     var emojis = guesses.map((guess) {
       switch (guess) {
         case Guess.skip:
-          return '⬛';
+          return isBlackAndWhite ? '⇒' : '⬛';
         case Guess.incorrect:
-          return '🟥';
+          return isBlackAndWhite ? '⧅' : '🟥';
         case Guess.sameArtist:
-          return '🟨';
+          return isBlackAndWhite ? '⧆' : '🟨';
         case Guess.correct:
-          return '🟩';
+          return isBlackAndWhite ? '☆' : '🟩';
       }
     }).toList();
     while (emojis.length < 5) {
-      emojis.add('⬜');
+      emojis.add(isBlackAndWhite ? '○' : '⬜');
     }
     var quantity = guesses.length == 5 && guesses[4] != Guess.correct
         ? "X"
