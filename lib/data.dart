@@ -3,33 +3,46 @@ import 'package:lyrically/debug.dart';
 import 'package:lyrically/guess.dart';
 
 class Data {
-  static Puzzle todayPuzzle = Puzzle.empty();
-  static Song todayAnswer = Song.empty();
-  static DateTime get todayDate => DateTime.now();
+  static Puzzle loadedPuzzle = Puzzle.empty();
+  static Song loadedAnswer = Song.empty();
+  static DateTime loadedDate = DateTime.fromMillisecondsSinceEpoch(0);
+  static String get loadedDateYMD => datetimeToYMD(loadedDate);
+
+  static final DateTime startDate = DateTime(2024, 9, 11);
+  static DateTime get endDate => DateTime(2024, 9, 21);
+  static int get totalDailies => endDate.difference(startDate).inDays + 1;
 
   static final List<String> allSongs = <String>[];
 
-  // TODO: Separate into multiple FutureBuilders (lyrics after loadTodayPuzzle, search bar after loadAllSongs)
-  static Future<void> initialize() async {
-    debug("loading today's puzzle.");
-    if (todayPuzzle.id == -1) await loadTodayPuzzle();
-    debug("loading all songs.");
-    if (allSongs.isEmpty) await loadAllSongs();
+  static Future<void> initialize([DateTime? date]) async {
+    date ??= DateTime.now();
+    await loadPuzzleForDate(date);
+    if (allSongs.isEmpty) {
+      await loadAllSongs();
+    }
   }
 
   static String datetimeToYMD(DateTime dt) {
     return "${dt.year.toString().padLeft(4, '0')}${dt.month.toString().padLeft(2, '0')}${dt.day.toString().padLeft(2, '0')}";
   }
 
-  static Future<void> loadTodayPuzzle() async {
+  static DateTime datetimeFromYMD(String ymd) {
+    int year = int.parse(ymd.substring(0, 4));
+    int month = int.parse(ymd.substring(4, 6));
+    int day = int.parse(ymd.substring(6));
+    return DateTime(year, month, day);
+  }
+
+  static Future<void> loadPuzzleForDate(DateTime date) async {
     final firestore = FirebaseFirestore.instance;
+    loadedDate = date;
 
     try {
       final dailiesCollection = firestore.collection("dailies");
-      final dailyDocRef = dailiesCollection.doc(datetimeToYMD(todayDate));
+      final dailyDocRef = dailiesCollection.doc(loadedDateYMD);
       final dailyDocSnap = await dailyDocRef.get();
       if (!dailyDocSnap.exists) {
-        throw Exception("Today's daily does not exist.");
+        throw Exception("Today's daily ($loadedDateYMD) does not exist.");
       }
 
       final dailyData = dailyDocSnap.data() as Map<String, dynamic>;
@@ -49,7 +62,7 @@ class Data {
       }
 
       final puzzleData = puzzleDocSnap.data() as Map<String, dynamic>;
-      todayPuzzle = Puzzle.fromFirebase(puzzleData);
+      loadedPuzzle = Puzzle.fromFirebase(puzzleData);
 
       final songId = puzzleData['songId'];
       final songDocRef = firestore.collection("songs").doc(songId.toString());
@@ -59,9 +72,9 @@ class Data {
       }
 
       final songData = songDocSnap.data() as Map<String, dynamic>;
-      todayAnswer = Song.fromFirebase(songData);
+      loadedAnswer = Song.fromFirebase(songData);
 
-      debug(todayAnswer.toStringVerbose());
+      debug(loadedAnswer.toStringVerbose());
     } on FirebaseException {
       rethrow;
     } on Exception catch (e) {
@@ -83,17 +96,18 @@ class Data {
   }
 
   static String getLyricFragment(int index) {
-    return todayPuzzle.fragments[index];
+    return loadedPuzzle.fragments[index];
   }
 
   static calculateGuess(String guessText) {
-    // TODO: This is fragile. It should ignore whitespace and caps.
-    if (!allSongs.contains(guessText)) return Guess.skip;
+    if (!allSongs.any((song) => song.equalsIgnoreCase(guessText))) {
+      return Guess.skip;
+    }
     var guess = Song.parse(guessText);
-    if (guess.artist == todayAnswer.artist &&
-        guess.title == todayAnswer.title) {
+    if (guess.artist.equalsIgnoreCase(loadedAnswer.artist) &&
+        guess.title.equalsIgnoreCase(loadedAnswer.title)) {
       return Guess.correct;
-    } else if (guess.artist == todayAnswer.artist) {
+    } else if (guess.artist == loadedAnswer.artist) {
       return Guess.sameArtist;
     } else {
       return Guess.incorrect;
@@ -167,7 +181,6 @@ class Song {
   static Song parse(String songInfo) {
     final parts = songInfo.split(' - ');
     if (parts.length != 2) {
-      // throw ArgumentError("songInfo should be in the format 'Artist - Title'");
       return Song(id: -1, title: "", artist: "", writers: "", year: 0);
     }
     final artist = parts.first;
@@ -180,10 +193,14 @@ class Song {
       identical(this, other) ||
       other is Song &&
           runtimeType == other.runtimeType &&
-          title.toLowerCase() == other.title.toLowerCase() &&
-          artist.toLowerCase() == other.artist.toLowerCase();
+          title.equalsIgnoreCase(other.title) &&
+          artist.equalsIgnoreCase(other.artist);
 
   @override
   int get hashCode =>
       title.toLowerCase().hashCode ^ artist.toLowerCase().hashCode;
+}
+
+extension StringExtension on String {
+  bool equalsIgnoreCase(String other) => toLowerCase() == other.toLowerCase();
 }

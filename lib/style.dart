@@ -77,3 +77,29 @@ class Style {
 
   static TextStyle get labelSmall => labelLarge;
 }
+
+class LyricallyThemeData {
+  static ThemeData get instance => ThemeData(
+        shadowColor: Colors.transparent,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.teal, brightness: Brightness.dark),
+        useMaterial3: true,
+        textTheme: TextTheme(
+          displayLarge: Style.displayLarge,
+          displayMedium: Style.displayMedium,
+          displaySmall: Style.displaySmall,
+          headlineLarge: Style.headlineLarge,
+          headlineMedium: Style.headlineMedium,
+          headlineSmall: Style.headlineSmall,
+          titleLarge: Style.titleLarge,
+          titleMedium: Style.titleMedium,
+          titleSmall: Style.titleSmall,
+          bodyLarge: Style.bodyLarge,
+          bodyMedium: Style.bodyMedium,
+          bodySmall: Style.bodySmall,
+          labelLarge: Style.labelLarge,
+          labelMedium: Style.labelMedium,
+          labelSmall: Style.labelSmall,
+        ),
+      );
+}

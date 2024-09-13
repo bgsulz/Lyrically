@@ -18,6 +18,12 @@ class LyricallyAppBar extends StatelessWidget {
             icon: const Icon(Icons.help),
             onPressed: () => _showHelp(context),
           ),
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/archive');
+            },
+          ),
         ],
       ),
     );

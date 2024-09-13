@@ -25,7 +25,7 @@ class SongInfoCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(16),
               child: Text(
-                "Released in: ${Data.todayAnswer.year}",
+                "Released in: ${Data.loadedAnswer.year}",
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!

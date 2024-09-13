@@ -32,8 +32,10 @@ class _TranslateOnHoverState extends State<TranslateOnHover> {
   }
 
   void _onMouseEvent(bool didEnter) {
-    setState(() {
-      _isHovering = didEnter;
-    });
+    if (mounted) {
+      setState(() {
+        _isHovering = didEnter;
+      });
+    }
   }
 }

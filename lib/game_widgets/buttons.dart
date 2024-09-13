@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lyrically/guess.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,7 @@ class GuessButtons extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () => (BuildContext context) {
-            gameState.skip();
+            gameState.submitGuess(Guess.skip);
           }(context),
           style: TextButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.secondaryContainer,

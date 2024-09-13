@@ -20,12 +20,12 @@ class ResultDisplay extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("${gameState.isSolved ? "You got it!" : ""} The answer was:"),
-        Text(Data.todayAnswer.title,
+        Text(Data.loadedAnswer.title,
             style: Theme.of(context).textTheme.headlineSmall),
-        Text(Data.todayAnswer.artist,
+        Text(Data.loadedAnswer.artist,
             style: Theme.of(context).textTheme.titleSmall),
         const SizedBox(height: 16),
-        Text("Written by ${Data.todayAnswer.writers}"),
+        Text("Written by ${Data.loadedAnswer.writers}"),
         const SizedBox(height: 16),
         Text(
           "Guesses: ${GuessInfo.summarize(gameState.guesses, isBlackAndWhite: true)}",
@@ -51,7 +51,7 @@ class ResultDisplay extends StatelessWidget {
   }
 
   _getText() {
-    return "Lyrically ${Data.todayDate.toString().split(' ')[0]}\n${GuessInfo.summarize(gameState.guesses)}";
+    return "Lyrically ${Data.loadedDate.toString().split(' ')[0]}\n${GuessInfo.summarize(gameState.guesses)}";
   }
 }
 

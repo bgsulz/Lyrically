@@ -55,7 +55,6 @@ class LyricCard extends StatelessWidget {
             child: Text(
               isShown ? lyric : "...",
               maxLines: null,
-              // overflow: TextOverflow.visible,
             ),
           ),
         ),

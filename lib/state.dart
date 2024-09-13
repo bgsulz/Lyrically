@@ -13,77 +13,71 @@ class GameState extends ChangeNotifier {
   final _localStorage = web.window.localStorage;
 
   int songId = 2;
-  SolutionState solutionState = SolutionState.unsolved;
-  bool get isSolved => solutionState == SolutionState.solved;
-
   List<Guess> _guesses = <Guess>[];
   int get revealedCount => _guesses.length + 1;
 
-  List<Guess> get guesses => UnmodifiableListView<Guess>(_guesses);
-
-  GameState() {
-    _load();
+  SolutionState get solutionState {
+    if (_guesses.isEmpty) return SolutionState.unsolved;
+    if (_guesses.last == Guess.correct) return SolutionState.solved;
+    if (_guesses.length < 5) return SolutionState.unsolved;
+    return SolutionState.failed;
   }
 
-  void submitGuess() {
-    var guess = Data.calculateGuess(guessController.text);
+  bool get isSolved => solutionState == SolutionState.solved;
+
+  List<Guess> get guesses => UnmodifiableListView<Guess>(_guesses);
+
+  void submitGuess([Guess? override]) {
+    Guess guess = override ?? Data.calculateGuess(guessController.text);
     guessController.clear();
 
     _guesses.add(guess);
-    if (guess != Guess.correct) {
-      skip();
-    } else {
-      _solve();
-    }
-  }
-
-  void skip() {
-    _guesses.add(Guess.skip);
-    if (revealedCount > 5) {
-      _fail();
-    } else {
-      notifyListeners();
-      _save();
-    }
-  }
-
-  void _solve() {
-    solutionState = SolutionState.solved;
     notifyListeners();
     _save();
   }
 
-  void _fail() {
-    solutionState = SolutionState.failed;
-    notifyListeners();
-    _save();
-  }
+  void _save([String? date]) {
+    date ??= Data.loadedDateYMD;
 
-  void _save() {
-    debug(
-        'Saving state: ${jsonEncode(_guesses.map((g) => g.name).toList())}, ${solutionState.name}');
-    _localStorage['guesses'] = jsonEncode(_guesses.map((g) => g.name).toList());
-    _localStorage['solutionState'] = solutionState.name;
+    final state = {
+      "guesses": _guesses.map((g) => g.index).toList(),
+    };
+    debug('Saving state: ${jsonEncode(state)}');
+    _localStorage[date] = jsonEncode(state);
     debug('Saved state');
   }
 
-  void _load() {
-    final guessesJson = _localStorage['guesses'];
-    final solutionStateString = _localStorage['solutionState'];
-    debug('Loading state: $guessesJson, $solutionStateString');
+  void load([String? date]) {
+    date ??= Data.loadedDateYMD;
 
-    if (guessesJson != null) {
-      List<String> list = jsonDecode(guessesJson)
-          .map<String>((guess) => guess.toString())
-          .toList();
-      _guesses = list.map((item) => Guess.values.byName(item)).toList();
+    final historyString = _localStorage[date];
+    debug('Loading state: $historyString');
+
+    if (historyString == null) {
+      _guesses = <Guess>[];
+    } else {
+      try {
+        debug('attempting json');
+        Map<String, dynamic> history = jsonDecode(historyString);
+        final guessesList = history['guesses'] as List<dynamic>;
+        final guesses = <Guess>[];
+        for (final index in guessesList) {
+          if (index >= 0 && index < Guess.values.length) {
+            guesses.add(Guess.values[index]);
+          } else {
+            throw Exception('Invalid guess index: $index');
+          }
+        }
+        _guesses = guesses;
+      } on Exception catch (e) {
+        debug('Failed to load state from $date: $e');
+        _localStorage[date] = '';
+        _guesses = <Guess>[];
+        return;
+      }
     }
 
-    if (solutionStateString != null) {
-      solutionState = SolutionState.values.byName(solutionStateString);
-    }
-
-    notifyListeners();
+    // notifyListeners();
     debug('Loaded state');
   }
 }
