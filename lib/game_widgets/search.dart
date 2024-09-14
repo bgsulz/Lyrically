@@ -13,23 +13,34 @@ class SongSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameState = Provider.of<GameState>(context, listen: false);
 
-    return SearchField(
-      searchStyle: Theme.of(context).textTheme.bodyMedium,
-      searchInputDecoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Guess a song...',
-      ),
-      dynamicHeight: true,
-      itemHeight: 60,
-      maxSuggestionBoxHeight: 180,
-      suggestions: Load.songsList
-          .map((element) => SearchFieldListItem<String>(element.toString()))
-          .toList(),
-      animationDuration: Duration.zero,
-      onSubmit: (String selection) {
-        gameState.submitGuess();
-      },
-      controller: gameState.guessController,
-    );
+    return FutureBuilder(
+        future: Load.allSongs(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return SearchField(
+              searchStyle: Theme.of(context).textTheme.bodyMedium,
+              searchInputDecoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Guess a song...',
+              ),
+              dynamicHeight: true,
+              itemHeight: 60,
+              maxSuggestionBoxHeight: 180,
+              suggestions: Load.songsList
+                  .map((element) =>
+                      SearchFieldListItem<String>(element.toString()))
+                  .toList(),
+              animationDuration: Duration.zero,
+              onSubmit: (String selection) {
+                gameState.submitGuess();
+              },
+              controller: gameState.guessController,
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 }

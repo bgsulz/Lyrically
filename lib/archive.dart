@@ -100,8 +100,11 @@ class PuzzleCard extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      GuessInfo.summarize(Load.guessesForDate(date.toYMD()),
-                          isBlackAndWhite: true),
+                      context.mounted
+                          ? GuessInfo.summarize(
+                              Load.guessesForDate(date.toYMD()),
+                              isBlackAndWhite: true)
+                          : "",
                       maxLines: null,
                       textAlign: TextAlign.right,
                     )

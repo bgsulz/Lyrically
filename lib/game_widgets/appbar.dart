@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LyricallyAppBar extends StatelessWidget {
   const LyricallyAppBar({super.key});
@@ -10,10 +11,10 @@ class LyricallyAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(
-            icon: const Icon(Icons.insert_chart),
-            onPressed: () => _showStats(context),
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.insert_chart),
+          //   onPressed: () => _showStats(context),
+          // ),
           IconButton(
             icon: const Icon(Icons.help),
             onPressed: () => _showHelp(context),
@@ -34,11 +35,14 @@ class LyricallyAppBar extends StatelessWidget {
       context: context,
       builder: (context) {
         return Dialog(
-          child: SelectionArea(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child:
-                  Text("Stats", style: Theme.of(context).textTheme.titleMedium),
+          child: SizedBox(
+            width: 480,
+            child: SelectionArea(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Text("Stats",
+                    style: Theme.of(context).textTheme.titleMedium),
+              ),
             ),
           ),
         );
@@ -51,25 +55,57 @@ class LyricallyAppBar extends StatelessWidget {
       context: context,
       builder: (context) {
         return Dialog(
-          child: SelectionArea(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("How to play",
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "Guess which song the shown lyrics are from. Fragments appear one by one. You have 5 guesses.",
-                  ),
-                ],
+          child: SizedBox(
+            width: 480,
+            child: SelectionArea(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("How to play",
+                        style: Theme.of(context).textTheme.titleMedium),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Try to figure out which song the shown lyrics are from.\nLyric excerpts might not be in order!\nYou have 5 guesses.",
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Lyrically was made by Ben Sulzinsky.\nThe game and puzzles have been designed by his dad.",
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            _launchUrl(Uri.parse("https://bgsulz.com"));
+                          },
+                          child: const Text("More of my work"),
+                        ),
+                        const SizedBox(width: 16),
+                        TextButton(
+                          onPressed: () {
+                            _launchUrl(Uri.parse("https://bgsulz.com"));
+                          },
+                          child: const Text("Support us"),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  Future<void> _launchUrl(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
