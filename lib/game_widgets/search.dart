@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lyrically/load.dart';
+import 'package:lyrically/data/load.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';

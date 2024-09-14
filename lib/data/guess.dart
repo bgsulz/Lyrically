@@ -20,8 +20,10 @@ class GuessInfo {
     var quantity = guesses.length == 5 && guesses[4] != Guess.correct
         ? "X"
         : guesses.length.toString();
-    var trailing =
-        guesses.isNotEmpty && guesses.last == Guess.correct ? "" : "...";
+    var trailing = ((guesses.isNotEmpty && guesses.last == Guess.correct) ||
+            guesses.length == 5)
+        ? ""
+        : "...";
     return "${'$quantity$trailing/5'} [${emojis.join('')}]";
   }
 }

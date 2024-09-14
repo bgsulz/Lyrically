@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lyrically/guess.dart';
+import 'package:lyrically/data/guess.dart';
 import 'package:lyrically/state.dart';
 
 class ResultDisplay extends StatelessWidget {

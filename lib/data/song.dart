@@ -1,4 +1,4 @@
-import 'package:lyrically/ext.dart';
+import 'package:lyrically/utility/ext.dart';
 
 class Song {
   Song({

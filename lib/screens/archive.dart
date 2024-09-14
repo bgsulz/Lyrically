@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lyrically/guess.dart';
-import 'package:lyrically/load.dart';
-import 'package:lyrically/debug.dart';
-import 'package:lyrically/hover.dart';
+import 'package:lyrically/data/guess.dart';
+import 'package:lyrically/data/load.dart';
+import 'package:lyrically/utility/debug.dart';
+import 'package:lyrically/utility/hover.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
-import 'ext.dart';
+import '../utility/ext.dart';
 
 class Archive extends StatelessWidget {
   const Archive({super.key});

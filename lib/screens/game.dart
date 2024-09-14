@@ -1,16 +1,16 @@
-import 'package:lyrically/debug.dart';
+import 'package:lyrically/utility/debug.dart';
 import 'package:lyrically/game_widgets/appbar.dart';
 import 'package:lyrically/state.dart';
 
-import 'game_widgets/buttons.dart';
-import 'game_widgets/info.dart';
-import 'game_widgets/results.dart';
-import 'game_widgets/lyric.dart';
-import 'game_widgets/search.dart';
+import '../game_widgets/buttons.dart';
+import '../game_widgets/info.dart';
+import '../game_widgets/results.dart';
+import '../game_widgets/lyric.dart';
+import '../game_widgets/search.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:lyrically/ext.dart';
+import 'package:lyrically/utility/ext.dart';
 
 class Game extends StatelessWidget {
   final DateTime? date;

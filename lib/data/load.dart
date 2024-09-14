@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:lyrically/debug.dart';
-import 'package:lyrically/ext.dart';
+import 'package:lyrically/utility/debug.dart';
+import 'package:lyrically/utility/ext.dart';
 
-import 'data/puzzle.dart';
-import 'data/song.dart';
+import 'puzzle.dart';
+import 'song.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lyrically/guess.dart';
+import 'package:lyrically/data/guess.dart';
 import 'package:web/web.dart' as web;
 
 class Load {

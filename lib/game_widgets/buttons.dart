@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lyrically/guess.dart';
+import 'package:lyrically/data/guess.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 

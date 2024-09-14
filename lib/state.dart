@@ -2,10 +2,10 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:lyrically/data/puzzle.dart';
 import 'package:lyrically/data/song.dart';
-import 'package:lyrically/debug.dart';
-import 'package:lyrically/ext.dart';
-import 'package:lyrically/guess.dart';
-import 'package:lyrically/load.dart';
+import 'package:lyrically/utility/debug.dart';
+import 'package:lyrically/utility/ext.dart';
+import 'package:lyrically/data/guess.dart';
+import 'package:lyrically/data/load.dart';
 
 enum SolutionState { unsolved, solved, failed }
 

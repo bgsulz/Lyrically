@@ -1,10 +1,10 @@
 import 'firebase_options.dart';
 
-import 'archive.dart';
-import 'game.dart';
+import 'screens/archive.dart';
+import 'screens/game.dart';
 import 'state.dart';
-import 'style.dart';
-import 'ext.dart';
+import 'utility/style.dart';
+import 'utility/ext.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

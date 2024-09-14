@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:lyrically/hover.dart';
+import 'package:lyrically/utility/hover.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 
