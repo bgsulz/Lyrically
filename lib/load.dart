@@ -14,7 +14,9 @@ class Load {
   static List<String> songsList = <String>[];
 
   static final DateTime startDate = DateTime(2024, 9, 11);
-  static DateTime get endDate => DateTime(2024, 9, 21);
+  static DateTime get endDate => DateTime.now()
+      .copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+
   static int get totalDailies => endDate.difference(startDate).inDays + 1;
 
   static Future<void> allSongs([DateTime? date]) async {

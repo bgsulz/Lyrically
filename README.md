@@ -1,16 +1,14 @@
-# lyrically
+[![Lyrically Logo](web/favicon.png)](https://lyrics-guessing-game.web.app/)
 
-A new Flutter project.
 
-## Getting Started
+# Lyrically
 
-This project is a starting point for a Flutter application.
+A daily guesser about song lyrics. Lyric excerpts are revealed one by one -- and they might not be in sequence! Try to figure out which song contains all these lyrics.
 
-A few resources to get you started if this is your first Flutter project:
+## About
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+I created lyrically with Flutter. My dad and I have been working together on the game's puzzles. Firebase and Firestore power hosting and data storage.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Play
+
+Play an early build here: [https://lyrics-guessing-game.web.app/](https://lyrics-guessing-game.web.app/)

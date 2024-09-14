@@ -84,13 +84,13 @@ class LyricallyAppBar extends StatelessWidget {
                           },
                           child: const Text("More of my work"),
                         ),
-                        const SizedBox(width: 16),
-                        TextButton(
-                          onPressed: () {
-                            _launchUrl(Uri.parse("https://bgsulz.com"));
-                          },
-                          child: const Text("Support us"),
-                        ),
+                        // const SizedBox(width: 16),
+                        // TextButton(
+                        //   onPressed: () {
+                        //     _launchUrl(Uri.parse("https://bgsulz.com"));
+                        //   },
+                        //   child: const Text("Support us"),
+                        // ),
                       ],
                     ),
                   ],
