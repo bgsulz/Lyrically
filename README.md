@@ -1,5 +1,4 @@
-[![Lyrically Logo](web/favicon.png)](https://lyrics-guessing-game.web.app/)
-
+<a href="https://lyrics-guessing-game.web.app/"><img src="web/favicon.png" width="200" /></a>
 
 # Lyrically
 
