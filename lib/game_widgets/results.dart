@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lyrically/guess.dart';
-import 'package:lyrically/data.dart';
 import 'package:lyrically/state.dart';
 
 class ResultDisplay extends StatelessWidget {
@@ -20,12 +19,12 @@ class ResultDisplay extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("${gameState.isSolved ? "You got it!" : ""} The answer was:"),
-        Text(Data.loadedAnswer.title,
+        Text(gameState.loadedAnswer.title,
             style: Theme.of(context).textTheme.headlineSmall),
-        Text(Data.loadedAnswer.artist,
+        Text(gameState.loadedAnswer.artist,
             style: Theme.of(context).textTheme.titleSmall),
         const SizedBox(height: 16),
-        Text("Written by ${Data.loadedAnswer.writers}"),
+        Text("Written by ${gameState.loadedAnswer.writers}"),
         const SizedBox(height: 16),
         Text(
           "Guesses: ${GuessInfo.summarize(gameState.guesses, isBlackAndWhite: true)}",
@@ -50,9 +49,7 @@ class ResultDisplay extends StatelessWidget {
     );
   }
 
-  _getText() {
-    return "Lyrically ${Data.loadedDate.toString().split(' ')[0]}\n${GuessInfo.summarize(gameState.guesses)}";
+  String _getText() {
+    return "Lyrically ${gameState.loadedDate.toString().split(' ')[0]}\n${GuessInfo.summarize(gameState.guesses)}";
   }
 }
-
-class Toast {}

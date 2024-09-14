@@ -1,4 +1,4 @@
-import 'package:lyrically/data.dart';
+import 'package:lyrically/debug.dart';
 import 'package:lyrically/game_widgets/appbar.dart';
 import 'package:lyrically/state.dart';
 
@@ -10,25 +10,23 @@ import 'game_widgets/search.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lyrically/ext.dart';
 
 class Game extends StatelessWidget {
   final DateTime? date;
-  String? get dateYMD => date == null ? null : Data.datetimeToYMD(date!);
+  String? get dateYMD => date?.toYMD();
 
-  const Game({
+  Game({
     super.key,
     this.date,
-  });
-
-  Future<void> _initialize(context) async {
-    Provider.of<GameState>(context, listen: false).load(dateYMD);
-    await Data.initialize(date);
+  }) {
+    debug("Created new Game for date $dateYMD");
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _initialize(context),
+      future: Provider.of<GameState>(context, listen: false).prepare(date),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return _buildPage(context);

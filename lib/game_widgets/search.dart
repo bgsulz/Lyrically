@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lyrically/data.dart';
+import 'package:lyrically/load.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 import 'package:searchfield/searchfield.dart';
@@ -22,7 +22,7 @@ class SongSearchBar extends StatelessWidget {
       dynamicHeight: true,
       itemHeight: 60,
       maxSuggestionBoxHeight: 180,
-      suggestions: Data.allSongs
+      suggestions: Load.songsList
           .map((element) => SearchFieldListItem<String>(element.toString()))
           .toList(),
       animationDuration: Duration.zero,

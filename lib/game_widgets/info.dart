@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lyrically/hover.dart';
-import 'package:lyrically/data.dart';
+import 'package:lyrically/state.dart';
+import 'package:provider/provider.dart';
 
 class SongInfoCard extends StatelessWidget {
   const SongInfoCard({
@@ -24,14 +25,18 @@ class SongInfoCard extends StatelessWidget {
             ),
             child: Container(
               padding: const EdgeInsets.all(16),
-              child: Text(
-                "Released in: ${Data.loadedAnswer.year}",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(fontWeight: FontWeight.bold),
-                maxLines: 1,
-                // overflow: TextOverflow.ellipsis,
+              child: Consumer<GameState>(
+                builder:
+                    (BuildContext context, GameState value, Widget? child) {
+                  return Text(
+                    "Released in: ${value.loadedAnswer.year}",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                  );
+                },
               ),
             ),
           ),

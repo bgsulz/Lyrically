@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lyrically/data.dart';
+import 'package:lyrically/guess.dart';
+import 'package:lyrically/load.dart';
 import 'package:lyrically/debug.dart';
 import 'package:lyrically/hover.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
+import 'ext.dart';
 
 class Archive extends StatelessWidget {
   const Archive({super.key});
@@ -47,11 +49,11 @@ class PuzzlesList extends StatelessWidget {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: Data.totalDailies,
+      itemCount: Load.totalDailies,
       itemBuilder: (context, index) {
         return Consumer<GameState>(
           builder: (BuildContext context, GameState gameState, Widget? child) {
-            return PuzzleCard(date: Data.startDate.add(Duration(days: index)));
+            return PuzzleCard(date: Load.startDate.add(Duration(days: index)));
           },
         );
       },
@@ -85,7 +87,7 @@ class PuzzleCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.surfaceContainer,
             child: InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/${Data.datetimeToYMD(date)}');
+                Navigator.of(context).pushNamed('/${date.toYMD()}');
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -97,8 +99,9 @@ class PuzzleCard extends StatelessWidget {
                       textAlign: TextAlign.left,
                     ),
                     const Spacer(),
-                    const Text(
-                      "",
+                    Text(
+                      GuessInfo.summarize(Load.guessesForDate(date.toYMD()),
+                          isBlackAndWhite: true),
                       maxLines: null,
                       textAlign: TextAlign.right,
                     )

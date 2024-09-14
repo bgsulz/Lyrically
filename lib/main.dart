@@ -1,14 +1,16 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+import 'archive.dart';
+import 'game.dart';
+import 'state.dart';
+import 'style.dart';
+import 'ext.dart';
+
 import 'package:flutter/material.dart';
-import 'package:lyrically/archive.dart';
-import 'package:lyrically/data.dart';
-import 'package:lyrically/debug.dart';
-import 'package:lyrically/firebase_options.dart';
-import 'package:lyrically/game.dart';
-import 'package:lyrically/state.dart';
-import 'package:lyrically/style.dart';
-import 'package:mesh_gradient/mesh_gradient.dart';
 import 'package:provider/provider.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:mesh_gradient/mesh_gradient.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,41 +20,67 @@ void main() async {
   runApp(const LyricallyApp());
 }
 
+late MaterialApp app;
+
 class LyricallyApp extends StatelessWidget {
   const LyricallyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GameState(),
-      child: MaterialApp(
-        title: 'Lyrically',
-        theme: LyricallyThemeData.instance,
-        initialRoute: '/',
-        onGenerateRoute: (settings) {
-          final uri = Uri.parse(settings.name!);
-          debug('Route: $uri');
-          debug('Segments: ${uri.pathSegments.join(", ")}');
-          final date = uri.pathSegments.last;
-          debug('Route date: $date');
-          if (date.length == 8 && int.tryParse(date) != null) {
-            final datetime = Data.datetimeFromYMD(date);
-            debug('Route datetime: $datetime');
-            return MaterialPageRoute(
-              builder: (context) =>
-                  LyricallyScreen(child: Game(date: datetime)),
-              settings: settings,
-            );
-          }
-          debug('Returning null route');
-          return null;
-        },
-        routes: {
-          '/': (context) => const LyricallyScreen(child: Game()),
-          '/archive': (context) => const LyricallyScreen(child: Archive()),
-        },
-      ),
+    app = MaterialApp(
+      title: 'Lyrically',
+      theme: LyricallyThemeData.instance,
+      onGenerateInitialRoutes: (initialRoute) =>
+          [app.onGenerateRoute!(RouteSettings(name: initialRoute))!],
+      onGenerateRoute: _generateRoute,
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+            builder: (context) => const LyricallyScreen(child: Invalid()));
+      },
     );
+    return ChangeNotifierProvider(create: (context) => GameState(), child: app);
+  }
+
+  Route<dynamic>? _generateRoute(RouteSettings settings) {
+    final uri = Uri.parse(settings.name!);
+    if (uri.pathSegments.isEmpty) {
+      return MaterialPageRoute(builder: (context) {
+        return LyricallyScreen(child: Game());
+      });
+    }
+
+    final lastSegment = uri.pathSegments.last;
+
+    if (lastSegment.equalsIgnoreCase("archive")) {
+      return MaterialPageRoute(builder: (context) {
+        return const LyricallyScreen(child: Archive());
+      });
+    }
+
+    if (lastSegment.length == 8 && int.tryParse(lastSegment) != null) {
+      return MaterialPageRoute(
+        builder: (context) {
+          return LyricallyScreen(child: Game(date: lastSegment.fromYMD()));
+        },
+        settings: settings,
+      );
+    }
+
+    return MaterialPageRoute(
+      builder: (context) {
+        return const LyricallyScreen(child: Invalid());
+      },
+      settings: settings,
+    );
+  }
+}
+
+class Invalid extends StatelessWidget {
+  const Invalid({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text("It's the 404 page!");
   }
 }
 
@@ -69,18 +97,25 @@ class LyricallyScreen extends StatelessWidget {
     return Stack(
       children: [
         _gradientBackground(context),
-        Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Center(
-                child: SingleChildScrollView(
-                    child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 480),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: child,
-                        )))))
+        // if (context.mounted)
+        //   SelectionArea(child: _buildScaffold())
+        // else
+        _buildScaffold()
       ],
     );
+  }
+
+  Scaffold _buildScaffold() {
+    return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+            child: SingleChildScrollView(
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 480),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: child,
+                    )))));
   }
 
   Widget _gradientBackground(BuildContext context) {

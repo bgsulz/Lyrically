@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lyrically/hover.dart';
-import 'package:lyrically/data.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +88,7 @@ class LyricsList extends StatelessWidget {
             return LyricCard(
               isShown: gameState.solutionState != SolutionState.unsolved ||
                   gameState.revealedCount > index,
-              lyric: Data.getLyricFragment(index),
+              lyric: gameState.loadedPuzzle.fragments[index],
               index: index,
             );
           },
