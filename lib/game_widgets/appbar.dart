@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LyricallyAppBar extends StatelessWidget {
@@ -22,7 +23,7 @@ class LyricallyAppBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.history),
             onPressed: () {
-              Navigator.of(context).pushNamed('/archive');
+              context.go('/games');
             },
           ),
         ],

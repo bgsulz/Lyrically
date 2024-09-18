@@ -39,7 +39,7 @@ class Load {
       final dailyData = dailyDocSnap.data() as Map<String, dynamic>;
       final id = dailyData['id'] as int;
 
-      debug(id.toString());
+      // debug(id.toString());
 
       final docRef = await firestore
           .collection("lyrics")
@@ -99,13 +99,13 @@ class Load {
 
   static List<Guess> guessesForDate(String date) {
     final historyString = _localStorage[date];
-    debug('Loading state: $historyString');
+    // debug('Loading state: $historyString');
 
     if (historyString == null) {
       return <Guess>[];
     } else {
       try {
-        debug('attempting json');
+        // debug('attempting json');
         Map<String, dynamic> history = jsonDecode(historyString);
         final guessesList = history['guesses'] as List<dynamic>;
         final guesses = <Guess>[];
@@ -129,9 +129,9 @@ class Load {
     final state = {
       "guesses": guesses.map((g) => g.index).toList(),
     };
-    debug('Saving state: ${jsonEncode(state)}');
+    // debug('Saving state: ${jsonEncode(state)}');
     _localStorage[date] = jsonEncode(state);
-    debug('Saved state');
+    // debug('Saved state');
   }
 
   static calculateGuess(String guessText, Song answer) {

@@ -16,3 +16,10 @@ extension ToYMD on DateTime {
     return "${year.toString().padLeft(4, '0')}${month.toString().padLeft(2, '0')}${day.toString().padLeft(2, '0')}";
   }
 }
+
+extension IsToday on DateTime {
+  bool get isToday {
+    var now = DateTime.now();
+    return now.day == day && now.month == month && now.year == year;
+  }
+}

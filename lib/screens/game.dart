@@ -1,4 +1,3 @@
-import 'package:lyrically/utility/debug.dart';
 import 'package:lyrically/game_widgets/appbar.dart';
 import 'package:lyrically/state.dart';
 
@@ -20,7 +19,7 @@ class Game extends StatelessWidget {
     super.key,
     this.date,
   }) {
-    debug("Created new Game for date $dateYMD");
+    // debug("Created new Game for date $dateYMD");
   }
 
   @override

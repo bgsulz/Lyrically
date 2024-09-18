@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lyrically/data/guess.dart';
 import 'package:lyrically/data/load.dart';
-import 'package:lyrically/utility/debug.dart';
 import 'package:lyrically/utility/hover.dart';
 import 'package:lyrically/state.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ class Archive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debug("building archive screen.");
+    // debug("building archive screen.");
     return Column(children: [
       _buildIcons(context),
       const SizedBox(height: 8),
@@ -27,11 +27,11 @@ class Archive extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              var nav = Navigator.of(context);
-              if (nav.canPop()) {
-                nav.pop();
+              if (context.canPop()) {
+                print("poppin");
+                context.pop();
               } else {
-                nav.pushNamed("/");
+                context.go("/");
               }
             },
           )
@@ -87,7 +87,7 @@ class PuzzleCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.surfaceContainer,
             child: InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/${date.toYMD()}');
+                context.go('/games/${date.toYMD()}');
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
