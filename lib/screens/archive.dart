@@ -28,7 +28,6 @@ class Archive extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               if (context.canPop()) {
-                print("poppin");
                 context.pop();
               } else {
                 context.go("/");
