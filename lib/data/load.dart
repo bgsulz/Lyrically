@@ -92,8 +92,10 @@ class Load {
       final data = doc.data();
       final title = data['title'] as String;
       final artist = data['artist'] as String;
-      res.add("$artist - $title");
+      res.add("${artist.trim()} - ${title.trim()}");
     }
+
+    res.sort((a, b) => a.compareTo(b));
     return res;
   }
 

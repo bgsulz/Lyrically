@@ -37,8 +37,8 @@ class Song {
     if (parts.length != 2) {
       return Song(id: -1, title: "", artist: "", writers: "", year: 0);
     }
-    final artist = parts.first;
-    final title = parts.last;
+    final artist = parts.first.trim();
+    final title = parts.last.trim();
     return Song(id: -1, title: title, artist: artist, writers: "", year: 0);
   }
 

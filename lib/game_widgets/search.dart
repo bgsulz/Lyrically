@@ -18,9 +18,9 @@ class SongSearchBar extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return SearchField(
-              searchStyle: Theme.of(context).textTheme.bodyMedium,
-              searchInputDecoration: const InputDecoration(
-                border: OutlineInputBorder(),
+              searchInputDecoration: SearchInputDecoration(
+                searchStyle: Theme.of(context).textTheme.bodyMedium,
+                border: const OutlineInputBorder(),
                 hintText: 'Guess a song...',
               ),
               dynamicHeight: true,
