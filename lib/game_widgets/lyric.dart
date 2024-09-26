@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:glitters/glitters.dart';
 import 'package:lyrically/utility/hover.dart';
 import 'package:lyrically/state.dart';
+import 'package:mesh_gradient/mesh_gradient.dart';
 import 'package:provider/provider.dart';
 
 class LyricCard extends StatelessWidget {
@@ -48,15 +50,65 @@ class LyricCard extends StatelessWidget {
           elevation: 4,
           shape: RoundedRectangleBorder(borderRadius: _getBorderRadius(index)),
           color: _getColor(context, isShown, index),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              isShown ? lyric : "...",
-              maxLines: null,
-            ),
-          ),
+          child: isShown
+              ? Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    lyric,
+                    maxLines: null,
+                  ),
+                )
+              : SizedBox(
+                  height: 52,
+                  child: AnimatedMeshGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.surfaceContainer,
+                      Theme.of(context).colorScheme.surfaceContainerLow,
+                      Theme.of(context).colorScheme.surfaceContainer,
+                      Theme.of(context).colorScheme.surfaceContainerLow,
+                    ],
+                    seed: index * 2500.0,
+                    options: AnimatedMeshGradientOptions(
+                      grain: 0.5,
+                      frequency: 100,
+                    ),
+                    child: _buildGlitterStack(context),
+                  )),
         ),
       ),
+    );
+  }
+
+  GlitterStack _buildGlitterStack(BuildContext context) {
+    return GlitterStack(
+        duration: const Duration(milliseconds: 50),
+        interval: Duration.zero,
+        children: [
+          _buildGlitter(context, 0),
+          _buildGlitter(context, 1),
+          _buildGlitter(context, 2),
+          _buildGlitter(context, 3),
+          _buildGlitter(context, 4),
+          _buildGlitter(context, 5),
+          _buildGlitter(context, 6),
+          _buildGlitter(context, 7),
+          _buildGlitter(context, 8),
+          _buildGlitter(context, 9),
+          _buildGlitter(context, 10),
+        ]);
+  }
+
+  Glitters _buildGlitter(BuildContext context, int delay) {
+    return Glitters.icon(
+      icon: Icons.circle,
+      color: Theme.of(context).colorScheme.surfaceBright.lightenedBy(0.5),
+      inDuration: const Duration(milliseconds: 100),
+      outDuration: const Duration(milliseconds: 50),
+      duration: const Duration(milliseconds: 100),
+      interval: Duration.zero,
+      minSize: 2,
+      maxSize: 4,
+      delay: Duration(milliseconds: (delay * 50) % 250),
     );
   }
 }

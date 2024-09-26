@@ -11,31 +11,31 @@ class SongSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gameState = Provider.of<GameState>(context, listen: false);
-
     return FutureBuilder(
         future: Load.allSongs(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return SearchField(
-              searchInputDecoration: SearchInputDecoration(
-                searchStyle: Theme.of(context).textTheme.bodyMedium,
-                border: const OutlineInputBorder(),
-                hintText: 'Guess a song...',
-              ),
-              dynamicHeight: true,
-              itemHeight: 60,
-              maxSuggestionBoxHeight: 180,
-              suggestions: Load.songsList
-                  .map((element) =>
-                      SearchFieldListItem<String>(element.toString()))
-                  .toList(),
-              animationDuration: Duration.zero,
-              onSubmit: (String selection) {
-                gameState.submitGuess();
-              },
-              controller: gameState.guessController,
-            );
+            return Consumer<GameState>(builder: (context, gameState, widget) {
+              return SearchField(
+                searchInputDecoration: SearchInputDecoration(
+                  searchStyle: Theme.of(context).textTheme.bodyMedium,
+                  border: const OutlineInputBorder(),
+                  hintText: 'Guess a song...',
+                ),
+                dynamicHeight: true,
+                itemHeight: 60,
+                maxSuggestionBoxHeight: 180,
+                suggestions: Load.songsList
+                    .map((element) =>
+                        SearchFieldListItem<String>(element.toString()))
+                    .toList(),
+                animationDuration: Duration.zero,
+                onSubmit: (String selection) {
+                  gameState.submitGuess();
+                },
+                controller: gameState.guessController,
+              );
+            });
           } else {
             return const Center(
               child: CircularProgressIndicator(),
