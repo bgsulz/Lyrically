@@ -15,9 +15,9 @@ class Song {
   factory Song.fromFirebase(Map<String, dynamic> data) {
     return Song(
       id: data['id'] as int,
-      title: data['title'] as String,
-      artist: data['artist'] as String,
-      writers: data['writers'] as String,
+      title: (data['title'] as String).trim(),
+      artist: (data['artist'] as String).trim(),
+      writers: (data['writers'] as String).trim(),
       year: data['year'] as int,
     );
   }

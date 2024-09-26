@@ -144,7 +144,7 @@ class Load {
     if (guess.artist.equalsIgnoreCase(answer.artist) &&
         guess.title.equalsIgnoreCase(answer.title)) {
       return Guess.correct;
-    } else if (guess.artist == answer.artist) {
+    } else if (guess.artist.equalsIgnoreCase(answer.artist)) {
       return Guess.sameArtist;
     } else {
       return Guess.incorrect;

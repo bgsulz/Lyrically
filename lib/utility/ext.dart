@@ -1,5 +1,6 @@
 extension CaseIndependentEquality on String {
-  bool equalsIgnoreCase(String other) => toLowerCase() == other.toLowerCase();
+  bool equalsIgnoreCase(String other) =>
+      toLowerCase().trim() == other.toLowerCase().trim();
 }
 
 extension FromYMD on String {
