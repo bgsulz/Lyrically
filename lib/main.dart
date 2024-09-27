@@ -25,7 +25,6 @@ void main() async {
   runApp(const LyricallyApp());
 }
 
-// GoRouter configuration
 final _router = GoRouter(
   routes: [
     GoRoute(

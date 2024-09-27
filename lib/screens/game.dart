@@ -28,7 +28,7 @@ class Game extends StatelessWidget {
       future: Provider.of<GameState>(context, listen: false).prepare(date),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return _buildPage(context);
+          return SelectionArea(child: _buildPage(context));
         } else {
           return const Center(child: CircularProgressIndicator());
         }
@@ -38,38 +38,40 @@ class Game extends StatelessWidget {
 }
 
 Widget _buildPage(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const LyricallyAppBar(),
-      const SizedBox(height: 16),
-      Text('Lyrically', style: Theme.of(context).textTheme.titleLarge),
-      const SizedBox(height: 8),
-      Text('What song are these lyrics from?'.toUpperCase(),
-          style: Theme.of(context).textTheme.titleSmall),
-      const SizedBox(height: 16),
-      Consumer<GameState>(
-        builder: (context, gameState, child) {
-          return const SongInfoCard();
-        },
-      ),
-      const SizedBox(height: 8),
-      const LyricsList(),
-      const SizedBox(height: 16),
-      Consumer<GameState>(
-        builder: (context, gameState, child) {
-          return gameState.solutionState == SolutionState.unsolved
-              ? const Column(
-                  children: [
-                    SongSearchBar(),
-                    SizedBox(height: 16),
-                    GuessButtons(),
-                    SizedBox(height: 16),
-                  ],
-                )
-              : ResultDisplay(context: context, gameState: gameState);
-        },
-      ),
-    ],
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const LyricallyAppBar(),
+        const SizedBox(height: 16),
+        Text('Lyrically', style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 8),
+        Text('What song are these lyrics from?'.toUpperCase(),
+            style: Theme.of(context).textTheme.titleSmall),
+        const SizedBox(height: 16),
+        Consumer<GameState>(
+          builder: (context, gameState, child) {
+            return const SongInfoCard();
+          },
+        ),
+        const SizedBox(height: 8),
+        const LyricsList(),
+        const SizedBox(height: 16),
+        Consumer<GameState>(
+          builder: (context, gameState, child) {
+            return gameState.solutionState == SolutionState.unsolved
+                ? const Column(
+                    children: [
+                      SongSearchBar(),
+                      SizedBox(height: 16),
+                      GuessButtons(),
+                      SizedBox(height: 16),
+                    ],
+                  )
+                : ResultDisplay(context: context, gameState: gameState);
+          },
+        ),
+      ],
+    ),
   );
 }

@@ -13,11 +13,14 @@ class Archive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // debug("building archive screen.");
-    return Column(children: [
-      _buildIcons(context),
-      const SizedBox(height: 8),
-      const PuzzlesList()
-    ]);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildIcons(context),
+        const SizedBox(height: 8),
+        const Flexible(child: PuzzlesList()),
+      ],
+    );
   }
 
   Container _buildIcons(BuildContext context) {
@@ -47,7 +50,6 @@ class PuzzlesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       itemCount: Load.totalDailies,
       itemBuilder: (context, index) {
         return Consumer<GameState>(

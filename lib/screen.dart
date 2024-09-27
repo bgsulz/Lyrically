@@ -26,13 +26,12 @@ class LyricallyScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
-            child: SingleChildScrollView(
-                child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 480),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: child,
-                    )))));
+            child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 480),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: child,
+                ))));
   }
 
   Widget _gradientBackground(BuildContext context) {
