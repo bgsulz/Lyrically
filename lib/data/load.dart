@@ -99,6 +99,15 @@ class Load {
     return res;
   }
 
+  static bool checkFirstTime() {
+    final firstTime = _localStorage["firstTime"];
+    if (firstTime == null) {
+      _localStorage["firstTime"] = "false";
+      return true;
+    }
+    return false;
+  }
+
   static List<Guess> guessesForDate(String date) {
     final historyString = _localStorage[date];
     // debug('Loading state: $historyString');

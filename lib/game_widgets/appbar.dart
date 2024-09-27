@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lyrically/data/load.dart';
 import 'package:lyrically/fair_use.dart';
 import 'package:lyrically/game_widgets/dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,6 +10,12 @@ class LyricallyAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Load.checkFirstTime()) {
+      Future.delayed(Duration.zero, () {
+        if (context.mounted) _showHelp(context);
+      });
+    }
+
     return Container(
       color: Colors.transparent,
       child: Row(
@@ -96,13 +103,18 @@ class LyricallyAppBar extends StatelessWidget {
                 },
                 child: const Text("More of my work"),
               ),
-              // const SizedBox(width: 16),
-              // TextButton(
-              //   onPressed: () {
-              //     _launchUrl(Uri.parse("https://bgsulz.com"));
-              //   },
-              //   child: const Text("Support us"),
-              // ),
+              const SizedBox(width: 16),
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primaryContainer,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  context.pop();
+                },
+                child: const Text("Let's play!"),
+              ),
             ],
           ),
         ]);
