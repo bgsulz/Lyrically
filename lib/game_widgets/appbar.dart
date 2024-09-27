@@ -29,7 +29,7 @@ class LyricallyAppBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.history),
             onPressed: () {
-              context.go('/games');
+              context.push('/games');
             },
           ),
         ],
