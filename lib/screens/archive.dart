@@ -33,7 +33,7 @@ class Archive extends StatelessWidget {
               if (context.canPop()) {
                 context.pop();
               } else {
-                context.push("/");
+                context.go("/");
               }
             },
           )
@@ -88,7 +88,7 @@ class PuzzleCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.surfaceContainer,
             child: InkWell(
               onTap: () {
-                context.push('/games/${date.toYMD()}');
+                context.go('/games/${date.toYMD()}');
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
