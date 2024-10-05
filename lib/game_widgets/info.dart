@@ -14,6 +14,7 @@ class SongInfoCard extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: SizedBox(
         width: double.infinity,
+        height: 60,
         child: TranslateOnHover(
           child: Container(
             decoration: BoxDecoration(

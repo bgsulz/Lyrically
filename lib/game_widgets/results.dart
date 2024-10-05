@@ -50,6 +50,8 @@ class ResultDisplay extends StatelessWidget {
   }
 
   String _getText() {
-    return "Lyrically ${gameState.loadedDate.toString().split(' ')[0]}\n${GuessInfo.summarize(gameState.guesses)}";
+    return "Lyrically ${gameState.loadedDate.toString().split(' ')[0]}\n"
+        "${GuessInfo.summarize(gameState.guesses)}\n"
+        "https://lyrically.fun";
   }
 }

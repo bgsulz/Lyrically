@@ -44,7 +44,9 @@ Widget _buildPage(BuildContext context) {
       children: [
         const LyricallyAppBar(),
         const SizedBox(height: 16),
-        Text('Lyrically', style: Theme.of(context).textTheme.titleLarge),
+        FittedBox(
+            child: Text('Lyrically',
+                style: Theme.of(context).textTheme.titleLarge)),
         const SizedBox(height: 8),
         Text('What song are these lyrics from?'.toUpperCase(),
             style: Theme.of(context).textTheme.titleSmall),

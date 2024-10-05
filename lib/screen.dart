@@ -27,7 +27,7 @@ class LyricallyScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: Center(
             child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 480),
+                constraints: const BoxConstraints(maxWidth: 640),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: child,

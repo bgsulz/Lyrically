@@ -8,12 +8,13 @@ class Style {
         FontVariation("wght", 900),
         FontVariation("wdth", 125),
       ],
+      fontSize: 44,
     );
   }
 
-  static TextStyle get displayMedium => displayLarge;
+  static TextStyle get displayMedium => displayLarge.copyWith(fontSize: 32);
 
-  static TextStyle get displaySmall => displayLarge;
+  static TextStyle get displaySmall => displayLarge.copyWith(fontSize: 20);
 
   static TextStyle get headlineLarge {
     return const TextStyle(
@@ -22,12 +23,13 @@ class Style {
         FontVariation("wght", 900),
         FontVariation("wdth", 125),
       ],
+      fontSize: 44,
     );
   }
 
-  static TextStyle get headlineMedium => headlineLarge;
+  static TextStyle get headlineMedium => headlineLarge.copyWith(fontSize: 32);
 
-  static TextStyle get headlineSmall => headlineLarge;
+  static TextStyle get headlineSmall => headlineLarge.copyWith(fontSize: 20);
 
   static TextStyle get titleLarge {
     return const TextStyle(
@@ -36,17 +38,17 @@ class Style {
           FontVariation("wght", 900),
           FontVariation("wdth", 125),
         ],
-        fontSize: 40);
+        fontSize: 44);
   }
 
   static TextStyle get titleMedium => titleLarge.copyWith(
-        fontSize: 24,
-        letterSpacing: 2.0,
+        fontSize: 32,
+        // letterSpacing: 2.0,
       );
 
   static TextStyle get titleSmall => titleLarge.copyWith(
-        fontSize: 14,
-        letterSpacing: 2.0,
+        fontSize: 20,
+        // letterSpacing: 2.0,
       );
 
   static TextStyle get bodyLarge {
@@ -56,12 +58,13 @@ class Style {
         FontVariation("wght", 300),
         FontVariation("wdth", 100),
       ],
+      fontSize: 20,
     );
   }
 
-  static TextStyle get bodyMedium => bodyLarge;
+  static TextStyle get bodyMedium => bodyLarge.copyWith(fontSize: 18);
 
-  static TextStyle get bodySmall => bodyLarge;
+  static TextStyle get bodySmall => bodyLarge.copyWith(fontSize: 16);
 
   static TextStyle get labelLarge {
     return const TextStyle(
@@ -70,12 +73,13 @@ class Style {
         FontVariation("wght", 300),
         FontVariation("wdth", 100),
       ],
+      fontSize: 16,
     );
   }
 
-  static TextStyle get labelMedium => labelLarge;
+  static TextStyle get labelMedium => labelLarge.copyWith(fontSize: 17);
 
-  static TextStyle get labelSmall => labelLarge;
+  static TextStyle get labelSmall => labelLarge.copyWith(fontSize: 15);
 }
 
 class LyricallyThemeData {

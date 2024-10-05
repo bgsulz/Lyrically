@@ -44,6 +44,7 @@ class LyricCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      height: 60,
       child: TranslateOnHover(
         isActive: isShown,
         child: Material(
@@ -72,7 +73,11 @@ class LyricCard extends StatelessWidget {
                       grain: 0.5,
                       frequency: 100,
                     ),
-                    child: _buildGlitterStack(context),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          16.0, 16.0, 512.0 - 128.0, 16.0),
+                      child: _buildGlitterStack(context),
+                    ),
                   )),
         ),
       ),
