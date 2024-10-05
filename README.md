@@ -1,4 +1,4 @@
-<a href="https://lyrics-guessing-game.web.app/"><img src="web/favicon.png" width="200" /></a>
+<a href="https://lyrically.fun/"><img src="web/favicon.png" width="200" /></a>
 
 # Lyrically
 
@@ -10,4 +10,4 @@ I created lyrically with Flutter. My dad and I have been working together on the
 
 ## Play
 
-Play an early build here: [https://lyrics-guessing-game.web.app/](https://lyrics-guessing-game.web.app/)
+Play here: [https://lyrically.fun](https://lyrically.fun)
