@@ -20,7 +20,7 @@ class ResultDisplay extends StatelessWidget {
       children: [
         Text("${gameState.isSolved ? "You got it!" : ""} The answer was:"),
         Text(gameState.loadedAnswer.title,
-            style: Theme.of(context).textTheme.headlineSmall),
+            style: Theme.of(context).textTheme.headlineMedium),
         Text(gameState.loadedAnswer.artist,
             style: Theme.of(context).textTheme.titleSmall),
         const SizedBox(height: 16),
