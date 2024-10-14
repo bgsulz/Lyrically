@@ -74,9 +74,10 @@ class LyricCard extends StatelessWidget {
                       frequency: 100,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          16.0, 16.0, 512.0 - 128.0, 16.0),
-                      child: _buildGlitterStack(context),
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        child: _buildGlitterStack(context),
+                      ),
                     ),
                   )),
         ),

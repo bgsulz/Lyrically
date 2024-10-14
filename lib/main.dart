@@ -58,11 +58,12 @@ class LyricallyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => GameState(),
-        child: MaterialApp.router(
-          title: 'Lyrically',
-          theme: LyricallyThemeData.instance,
-          routerConfig: _router,
-        ));
+      create: (context) => GameState(),
+      child: MaterialApp.router(
+        title: 'Lyrically',
+        theme: LyricallyThemeData.instance,
+        routerConfig: _router,
+      ),
+    );
   }
 }

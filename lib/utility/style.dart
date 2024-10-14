@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 
 class Style {
+  static List<Color> get colors {
+    return [
+      Colors.red, // Monday
+      Colors.pink, // Tuesday
+      Colors.purple, // Wednesday
+      Colors.deepPurple, // Thursday
+      Colors.indigo, // Friday
+      Colors.blue, // Saturday
+      Colors.cyan, // Sunday
+    ];
+  }
+
+  static Color getColor(DateTime date) {
+    return colors[date.weekday - 1];
+  }
+
   static TextStyle get displayLarge {
     return const TextStyle(
       fontFamily: 'Archivo',

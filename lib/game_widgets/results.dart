@@ -16,7 +16,7 @@ class ResultDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("${gameState.isSolved ? "You got it!" : ""} The answer was:"),
         Text(gameState.loadedAnswer.title,
