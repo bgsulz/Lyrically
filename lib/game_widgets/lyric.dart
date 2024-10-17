@@ -43,8 +43,8 @@ class LyricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 60),
       child: TranslateOnHover(
         isActive: isShown,
         child: Material(
@@ -59,27 +59,25 @@ class LyricCard extends StatelessWidget {
                     maxLines: null,
                   ),
                 )
-              : SizedBox(
-                  height: 52,
-                  child: AnimatedMeshGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.surfaceContainer,
-                      Theme.of(context).colorScheme.surfaceContainerLow,
-                      Theme.of(context).colorScheme.surfaceContainer,
-                      Theme.of(context).colorScheme.surfaceContainerLow,
-                    ],
-                    seed: index * 2500.0,
-                    options: AnimatedMeshGradientOptions(
-                      grain: 0.5,
-                      frequency: 100,
+              : AnimatedMeshGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.surfaceContainer,
+                    Theme.of(context).colorScheme.surfaceContainerLow,
+                    Theme.of(context).colorScheme.surfaceContainer,
+                    Theme.of(context).colorScheme.surfaceContainerLow,
+                  ],
+                  seed: index * 2500.0,
+                  options: AnimatedMeshGradientOptions(
+                    grain: 0.5,
+                    frequency: 100,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      child: _buildGlitterStack(context),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SizedBox(
-                        child: _buildGlitterStack(context),
-                      ),
-                    ),
-                  )),
+                  ),
+                ),
         ),
       ),
     );

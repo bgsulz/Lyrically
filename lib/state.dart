@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:lyrically/data/puzzle.dart';
 import 'package:lyrically/data/song.dart';
+import 'package:lyrically/utility/debug.dart';
 import 'package:lyrically/utility/ext.dart';
 import 'package:lyrically/data/guess.dart';
 import 'package:lyrically/data/load.dart';
@@ -28,13 +29,13 @@ class GameState extends ChangeNotifier {
   bool get isSolved => solutionState == SolutionState.solved;
 
   Future<void> prepare([DateTime? date]) async {
-    // debug("Preparing for date ${date == null ? 'null' : date.toYMD()}");
+    debug("Preparing for date ${date == null ? 'null' : date.toYMD()}");
     loadedDate = date ?? DateTime.now();
-    // debug("Loading puzzle for date ${loadedDate.toYMD()}");
+    debug("Loading puzzle for date ${loadedDate.toYMD()}");
     loadedPuzzle = await Load.puzzleForDate(loadedDate);
-    // debug("Loading answer for puzzle ${loadedPuzzle.songId}");
+    debug("Loading answer for puzzle ${loadedPuzzle.songId}");
     loadedAnswer = await Load.answerForPuzzle(loadedPuzzle);
-    // debug("Finished preparing for date ${loadedDate.toYMD()}");
+    debug("Finished preparing for date ${loadedDate.toYMD()}");
     _guesses = Load.guessesForDate(loadedDate.toYMD());
   }
 

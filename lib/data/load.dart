@@ -67,6 +67,8 @@ class Load {
     final firestore = FirebaseFirestore.instance;
     final songId = puzzle.songId;
 
+    debug('Loading songId $songId vs id ${puzzle.id}');
+
     try {
       final songDocRef = firestore.collection("songs").doc(songId.toString());
       final songDocSnap = await songDocRef.get();
