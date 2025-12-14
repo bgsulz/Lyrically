@@ -52,28 +52,49 @@ class PuzzlesList extends StatefulWidget {
 
 class _PuzzlesListState extends State<PuzzlesList> {
   final ScrollController _controller = ScrollController();
+  late Future<List<DateTime>> _datesFuture;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _controller.jumpTo(_controller.position.maxScrollExtent);
-    });
+    _datesFuture = Load.availableDailyDates();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      controller: _controller,
-      itemCount: Load.totalDailies,
-      itemBuilder: (context, index) {
-        return Consumer<GameState>(
-          builder: (BuildContext context, GameState gameState, Widget? child) {
-            return PuzzleCard(date: Load.startDate.add(Duration(days: index)));
-          },
-        );
-      },
+    return SelectionArea(
+      child: FutureBuilder<List<DateTime>>(
+        future: _datesFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Failed to load archive: ${snapshot.error}'),
+            );
+          }
+      
+          final dates = snapshot.data ?? <DateTime>[];
+          if (dates.isEmpty) {
+            return const Center(child: Text('No puzzles available yet.'));
+          }
+      
+          return ListView.builder(
+            shrinkWrap: true,
+            controller: _controller,
+            itemCount: dates.length,
+            itemBuilder: (context, index) {
+              return Consumer<GameState>(
+                builder:
+                    (BuildContext context, GameState gameState, Widget? child) {
+                  return PuzzleCard(date: dates[index]);
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

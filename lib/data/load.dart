@@ -63,6 +63,40 @@ class Load {
     return Puzzle.empty();
   }
 
+  static Future<List<DateTime>> availableDailyDates({DateTime? upTo}) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final snapshot = await firestore.collection("dailies").get();
+
+      final cutoff = (upTo ?? DateTime.now()).copyWith(
+        hour: 23,
+        minute: 59,
+        second: 59,
+        millisecond: 999,
+      );
+
+      final dates = <DateTime>[];
+      for (final doc in snapshot.docs) {
+        try {
+          final date = doc.id.fromYMD().copyWith(hour: 12);
+          if (!date.isAfter(cutoff)) {
+            dates.add(date);
+          }
+        } on Exception catch (e) {
+          debug("Skipping daily doc ${doc.id}: $e");
+        }
+      }
+
+      dates.sort((a, b) => b.compareTo(a));
+      return dates;
+    } on FirebaseException {
+      rethrow;
+    } catch (e) {
+      debug("Failed to load archive dates: $e");
+      return <DateTime>[];
+    }
+  }
+
   static Future<Song> answerForPuzzle(Puzzle puzzle) async {
     final firestore = FirebaseFirestore.instance;
     final songId = puzzle.songId;
