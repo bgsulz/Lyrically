@@ -55,7 +55,7 @@ class LyricCard extends StatelessWidget {
               ? Container(
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    lyric,
+                    lyric.trim(),
                     maxLines: null,
                   ),
                 )

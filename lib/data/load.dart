@@ -130,6 +130,11 @@ class Load {
     return guesses.length < 5;
   }
 
+  static bool isPuzzleComplete(DateTime date) {
+    final guesses = guessesForDate(date.toYMD());
+    return !_isPuzzleIncomplete(guesses);
+  }
+
   static Future<Song> answerForPuzzle(Puzzle puzzle) async {
     final firestore = FirebaseFirestore.instance;
     final songId = puzzle.songId;

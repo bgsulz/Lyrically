@@ -113,6 +113,30 @@ class PuzzleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final baseCardColor = colorScheme.surfaceContainer;
+    final baseTextColor = colorScheme.onSurface;
+    final guesses = Load.guessesForDate(date.toYMD());
+    final hasGuesses = guesses.isNotEmpty;
+    final isComplete =
+        hasGuesses && (guesses.last == Guess.correct || guesses.length >= 5);
+    final inProgress = hasGuesses && !isComplete;
+
+    final inProgressCardColor =
+        Color.alphaBlend(Colors.white.withValues(alpha: 0.08), baseCardColor);
+    final cardColor = isComplete
+        ? baseTextColor
+        : inProgress
+            ? inProgressCardColor
+            : baseCardColor;
+    final textColor = isComplete ? baseCardColor : baseTextColor;
+    final guessSummary =
+        GuessInfo.summarize(guesses, isBlackAndWhite: true);
+    final textStyle = TextStyle(
+      color: textColor,
+      fontWeight: isComplete ? FontWeight.w600 : null,
+    );
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: SizedBox(
@@ -123,7 +147,7 @@ class PuzzleCard extends StatelessWidget {
             elevation: 4,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(4))),
-            color: Theme.of(context).colorScheme.surfaceContainer,
+            color: cardColor,
             child: InkWell(
               onTap: () {
                 context.go('/games/${date.toYMD()}');
@@ -136,16 +160,14 @@ class PuzzleCard extends StatelessWidget {
                       _getText(),
                       maxLines: null,
                       textAlign: TextAlign.left,
+                      style: textStyle,
                     ),
                     const Spacer(),
                     Text(
-                      context.mounted
-                          ? GuessInfo.summarize(
-                              Load.guessesForDate(date.toYMD()),
-                              isBlackAndWhite: true)
-                          : "",
+                      guessSummary,
                       maxLines: null,
                       textAlign: TextAlign.right,
+                      style: textStyle,
                     )
                   ],
                 ),
