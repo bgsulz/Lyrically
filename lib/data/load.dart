@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:lyrically/utility/debug.dart';
 import 'package:lyrically/utility/ext.dart';
 
@@ -12,6 +13,7 @@ class Load {
   static final _localStorage = web.window.localStorage;
 
   static List<String> songsList = <String>[];
+  static final Random _random = Random();
 
   static final DateTime startDate = DateTime(2024, 9, 11);
   static DateTime get endDate => DateTime.now()
@@ -95,6 +97,37 @@ class Load {
       debug("Failed to load archive dates: $e");
       return <DateTime>[];
     }
+  }
+
+  static Future<DateTime?> fallbackDailyDate() async {
+    final dates = await availableDailyDates();
+    if (dates.isEmpty) {
+      return null;
+    }
+
+    final incompleteDates = <DateTime>[];
+    for (final date in dates) {
+      final guesses = guessesForDate(date.toYMD());
+      if (_isPuzzleIncomplete(guesses)) {
+        incompleteDates.add(date);
+      }
+    }
+
+    if (incompleteDates.isNotEmpty) {
+      return incompleteDates[_random.nextInt(incompleteDates.length)];
+    }
+
+    return dates.first;
+  }
+
+  static bool _isPuzzleIncomplete(List<Guess> guesses) {
+    if (guesses.isEmpty) {
+      return true;
+    }
+    if (guesses.last == Guess.correct) {
+      return false;
+    }
+    return guesses.length < 5;
   }
 
   static Future<Song> answerForPuzzle(Puzzle puzzle) async {

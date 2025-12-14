@@ -30,13 +30,37 @@ class GameState extends ChangeNotifier {
 
   Future<void> prepare([DateTime? date]) async {
     debug("Preparing for date ${date == null ? 'null' : date.toYMD()}");
-    loadedDate = date ?? DateTime.now();
-    debug("Loading puzzle for date ${loadedDate.toYMD()}");
-    loadedPuzzle = await Load.puzzleForDate(loadedDate);
+    final requestedDate = date ?? DateTime.now();
+    loadedDate = requestedDate;
+    await _loadPuzzleForDate(loadedDate);
+
+    final requestedToday = date == null;
+    final puzzleMissing = loadedPuzzle.id == -1;
+    if (requestedToday && puzzleMissing) {
+      debug("Today's puzzle missing; attempting fallback date");
+      final fallback = await Load.fallbackDailyDate();
+      if (fallback != null) {
+        loadedDate = fallback;
+        await _loadPuzzleForDate(loadedDate);
+      }
+    }
+
+    if (loadedPuzzle.id == -1) {
+      debug("No valid puzzle available; falling back to empty state");
+      loadedAnswer = Song.empty();
+      _guesses = <Guess>[];
+      return;
+    }
+
     debug("Loading answer for puzzle ${loadedPuzzle.songId}");
     loadedAnswer = await Load.answerForPuzzle(loadedPuzzle);
     debug("Finished preparing for date ${loadedDate.toYMD()}");
     _guesses = Load.guessesForDate(loadedDate.toYMD());
+  }
+
+  Future<void> _loadPuzzleForDate(DateTime date) async {
+    debug("Loading puzzle for date ${date.toYMD()}");
+    loadedPuzzle = await Load.puzzleForDate(date);
   }
 
   void submitGuess([Guess? override]) {
