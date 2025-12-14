@@ -5,33 +5,62 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Guess the song from five lyric excerpts!">
+  <meta name="keywords" content="music game, lyric game, daily puzzle, word game, song quiz, lyrics, lyrically">
+  <meta name="author" content="Lyrically">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Lyrically">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="icons/Icon-512.png">
+
+  <!-- Android meta tags & icons -->
+  <link rel="icon" type="image/png" href="icons/Icon-512.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Lyrically | Guess the song from the lyric snippets!</title>
   <link rel="manifest" href="manifest.json">
 
-  <style>
-    h1 {
-      color: transparent;
-      position: absolute;
-      left: -9999px;
-    }
-  </style>
-  <h1><a href="/games">Archive | Play puzzles from past days</a></h1>  
+  <link rel="canonical" href="https://lyrically.fun/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lyrically.fun/">
+  <meta property="og:title" content="Lyrically | Guess the song from the lyric snippets!">
+  <meta property="og:description" content="Guess the song from five lyric excerpts!">
+  <meta property="og:image" content="icons/Icon-512.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://lyrically.fun/">
+  <meta property="twitter:title" content="Lyrically | Guess the song from the lyric snippets!">
+  <meta property="twitter:description" content="Guess the song from five lyric excerpts!">
+  <meta property="twitter:image" content="icons/Icon-512.png">
+
+  <link rel="stylesheet" href="style.css">
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4498713711122554"
      crossorigin="anonymous"></script>
 </head>
 <body>
+  <h1><a href="/games">Archive | Play puzzles from past days</a></h1>
+  <div id="loading" aria-label="Loading Lyrically">
+    <div id="loading-inner">
+      <div id="lyrically-text" aria-hidden="true">Lyrically</div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var loading = document.getElementById('loading');
+      if (loading) loading.remove();
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

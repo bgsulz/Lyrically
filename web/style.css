@@ -1,0 +1,59 @@
+@font-face {
+  font-family: RobotoFlexTitle;
+  src: url("RobotoFlex.ttf") format("truetype");
+  font-display: swap;
+}
+
+h1 {
+  color: transparent;
+  position: absolute;
+  left: -9999px;
+}
+
+body {
+  background: #0c1312;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  background: #0c1312;
+}
+
+#loading-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#lyrically-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(3rem, 8vw, 4.5rem);
+  font-family: 'RobotoFlexTitle', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-variation-settings: "wght" 800, "wdth" 125;
+  letter-spacing: 0.02em;
+  display: inline-block;
+  white-space: nowrap;
+  user-select: none;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+#loading p {
+  margin: 0.75rem 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.25rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  font-family: 'RobotoFlexTitle', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-variation-settings: "wght" 900, "wdth" 125;
+  opacity: 0.85;
+  text-align: left;
+}
